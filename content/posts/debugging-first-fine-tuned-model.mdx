@@ -1,0 +1,45 @@
+---
+title: "Debugging My First Fine-Tuned Model: The Rizz Bug and a Claim I Had to Take Back"
+date: "2026-08-18"
+summary: "How I fine-tuned Qwen2.5-1.5B-Instruct into a Gen Z slang translator using QLoRA on a laptop GPU, and the two bugs that taught me the most: one about how little signal LoRA actually needs, and one about auditing my own claims."
+---
+
+## What I built
+
+genz-slang-model is a small model that translates Gen Z slang into plain English, and back. It's a QLoRA fine-tune of Qwen2.5-1.5B-Instruct: rank-16 LoRA applied across all seven projection matrices (q/k/v/o and gate/up/down), 4-bit NF4 double-quantized, trained entirely on a laptop RTX 4060 (8GB) in about 20 minutes per run. It was also my first time training a model with QLoRA end to end.
+
+The model and code are public:
+- Model: [Hugging Face link]
+- Code: [GitHub link]
+
+This post is about the two bugs that taught me the most.
+
+## Bug #1: The model was confidently wrong about "rizz"
+
+Partway through evaluation, I noticed the model kept giving a wrong definition for the word "rizz" — confidently, not vaguely. That was strange, because the correct definition was already in my training data.
+
+When I went and counted, I found the correct definition appeared in maybe one or two examples out of roughly 4,000. That's the part that surprised me. I assumed that if the right answer is *in* the dataset, the model will learn it. It doesn't work that way, at least not with LoRA.
+
+LoRA only updates a small slice of the model's parameters — in this case, about 1.2% of the total. The rest of the model, including whatever wrong prior belief it already had about "rizz" from pretraining, stays frozen. A single example, or even two, isn't enough signal to override an existing strong belief. It's not that the model didn't "see" the right answer — it saw it, and it wasn't enough to move the needle.
+
+The fix wasn't repeating the same sentence more times. That barely helped. What actually worked was adding the correct definition in several different phrasings — different sentence structures, different contexts, different ways of asking about the term. Variety turned out to matter more than raw repetition count.
+
+## Bug #2: A claim about my own pipeline that wasn't true
+
+Fixing the rizz bug made me nervous about something bigger: I'd been describing my training data as "grounded in real slang datasets" — meaning it was built from actual public slang datasets, not just typed out from memory. I decided to go back and verify that claim against my own code instead of just trusting what I remembered writing.
+
+It wasn't true. My data-building script never actually read from the raw dataset files it was supposed to use. The vocabulary had been typed by hand, from memory, at an earlier stage of the project — and later steps never went back to correct that. The model still worked reasonably well, which is exactly why the gap was easy to miss. It only showed up because I went looking for it, not because anything visibly broke.
+
+I rebuilt the pipeline properly: new scripts to programmatically convert the real source datasets into training pairs, and a deduplicated vocabulary reference table built from the actual data rather than memory. I regenerated the training set — about 4,600 examples this time — and retrained. Interestingly, once I checked, several of the terms causing the most trouble (including "rizz") weren't well represented in the real source data either, which explained why they'd needed so much manual reinforcement in the first place.
+
+## A smaller honest note: sampling vs. greedy decoding
+
+One more thing worth mentioning, since it affects how much you can trust any single output. After the rebuild, a term that I'd already confirmed as fixed ("sending me") occasionally looked wrong again during casual testing. I checked it under greedy decoding — deterministic, always the highest-probability token — and confirmed it was a real, if narrow, regression, not just sampling noise.
+
+That distinction matters because most of my day-to-day testing used sampling (temperature 0.8, top-p 0.9) to get natural-sounding variety, not just the single most likely output. Sampling is why the model doesn't feel robotic, but it also means the same prompt can occasionally produce a worse answer purely by chance — for me during testing, and for anyone using the deployed model. I didn't chase this particular regression through a seventh training run. Instead, I documented it plainly in the model card: single-term slang definitions should be treated as informative, not authoritative.
+
+## What I'd take from this
+
+The biggest lesson wasn't really about LoRA mechanics, even though that's the part I learned first. It was that "the data technically contains the right answer" and "the model will reliably reproduce the right answer" are two different claims, and the gap between them is exactly where bugs like this live. The second lesson was that claims about your own pipeline are worth auditing the same way you'd audit anyone else's — I'd been repeating "grounded in real datasets" for a while before I actually checked it against the code.
+
+Full build log, including the library-version bugs and a transient CUDA crash along the way, is in the repo if you want the blow-by-blow version.
