@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import type { Project } from "@/lib/data";
 
@@ -38,16 +39,28 @@ export default function ProjectCard({ project }: { project: Project }) {
         ))}
       </div>
 
-      {project.link ? (
-        <a
-          href={project.link.url}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:opacity-80"
-        >
-          {project.link.label}
-          <ExternalLink size={13} />
-        </a>
+      {project.link || project.writeupSlug ? (
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          {project.link && (
+            <a
+              href={project.link.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:opacity-80"
+            >
+              {project.link.label}
+              <ExternalLink size={13} />
+            </a>
+          )}
+          {project.writeupSlug && (
+            <Link
+              href={`/blog/${project.writeupSlug}`}
+              className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:opacity-80"
+            >
+              Read the write-up
+            </Link>
+          )}
+        </div>
       ) : (
         <p className="mt-5 text-xs text-muted">Private — enterprise production system</p>
       )}

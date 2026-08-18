@@ -145,6 +145,7 @@ export type Project = {
   bullets: string[];
   tags: string[];
   link?: { label: string; url: string };
+  writeupSlug?: string;
 };
 
 export const projects: Project[] = [
@@ -189,6 +190,21 @@ export const projects: Project[] = [
     ],
     tags: ["Temporal", "Agentic AI", "Durable Execution"],
     link: { label: "GitHub", url: "https://github.com/AbhisekMishra" },
+  },
+  {
+    name: "Gen Z Slang Model",
+    org: "Personal / Learning",
+    status: "Personal Project",
+    description:
+      "A QLoRA fine-tune of Qwen2.5-1.5B-Instruct that translates Gen Z slang into plain English and back — trained end-to-end on a laptop GPU.",
+    bullets: [
+      "Rank-16 LoRA across all seven projection matrices, 4-bit NF4 double-quantized, ~20 minutes per training run on an 8GB RTX 4060.",
+      "Diagnosed why a correct answer present in the training data still wasn't learned — LoRA only updates ~1.2% of parameters, so a couple of examples can't override a strong pretrained prior.",
+      "Audited my own 'grounded in real datasets' claim against the code, found the pipeline never read the source files, and rebuilt it to generate ~4,600 examples programmatically.",
+    ],
+    tags: ["QLoRA", "Fine-tuning", "Qwen2.5", "LLM"],
+    link: { label: "GitHub", url: "https://github.com/AbhisekMishra/genz-model" },
+    writeupSlug: "debugging-first-fine-tuned-model",
   },
   {
     name: "Omnichannel Banking Platform",
