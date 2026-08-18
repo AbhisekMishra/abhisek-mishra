@@ -31,7 +31,7 @@ export default function Hero() {
           </a>
           <a
             href="/resume.pdf"
-            download
+            download="AbhisekMishra.pdf"
             className="inline-flex items-center gap-1.5 rounded-full border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted-bg"
           >
             <Download size={15} />
