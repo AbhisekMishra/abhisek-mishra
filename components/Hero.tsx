@@ -1,12 +1,18 @@
+import Image from "next/image";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 import { profile } from "@/lib/data";
 
 export default function Hero() {
   return (
     <section className="mx-auto flex max-w-5xl flex-col items-start gap-10 px-6 pb-20 pt-16 sm:pt-24 md:flex-row md:items-center">
-      <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl bg-accent font-mono text-4xl font-semibold text-accent-foreground sm:h-32 sm:w-32">
-        {profile.initials}
-      </div>
+      <Image
+        src="/profile.jpg"
+        alt={profile.name}
+        width={128}
+        height={128}
+        priority
+        className="h-28 w-28 shrink-0 rounded-2xl object-cover ring-1 ring-border sm:h-32 sm:w-32"
+      />
 
       <div>
         <p className="flex items-center gap-1.5 text-sm text-muted">
