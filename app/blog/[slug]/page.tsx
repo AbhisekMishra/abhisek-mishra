@@ -18,9 +18,22 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
 
+  const title = `${post.meta.title} — Abhisek Mishra`;
+
   return {
-    title: `${post.meta.title} — Abhisek Mishra`,
+    title,
     description: post.meta.summary,
+    openGraph: {
+      title,
+      description: post.meta.summary,
+      type: "article",
+      publishedTime: post.meta.date,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: post.meta.summary,
+    },
   };
 }
 
