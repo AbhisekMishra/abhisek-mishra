@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PenLine } from "lucide-react";
 import { getAllPosts } from "@/lib/posts";
+import { siteUrl } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Blog — Abhisek Mishra",
   description: "Notes on agentic AI, RAG systems, and production engineering.",
+  alternates: { canonical: `${siteUrl}/blog` },
 };
 
 export default function BlogIndex() {

@@ -1,3 +1,5 @@
+export const siteUrl = "https://abhisek-mishra.vercel.app";
+
 export const profile = {
   name: "Abhisek Mishra",
   initials: "AM",

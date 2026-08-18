@@ -24,8 +24,10 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={photoSrc}
+          alt=""
           width={220}
           height={220}
           style={{ borderRadius: 28, objectFit: "cover" }}
