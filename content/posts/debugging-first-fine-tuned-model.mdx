@@ -9,8 +9,8 @@ summary: "How I fine-tuned Qwen2.5-1.5B-Instruct into a Gen Z slang translator u
 genz-slang-model is a small model that translates Gen Z slang into plain English, and back. It's a QLoRA fine-tune of Qwen2.5-1.5B-Instruct: rank-16 LoRA applied across all seven projection matrices (q/k/v/o and gate/up/down), 4-bit NF4 double-quantized, trained entirely on a laptop RTX 4060 (8GB) in about 20 minutes per run. It was also my first time training a model with QLoRA end to end.
 
 The model and code are public:
-- Model: [Hugging Face link]
-- Code: [GitHub link]
+- Model: [huggingface.co/abhisekm/genz-slang-model](https://huggingface.co/abhisekm/genz-slang-model)
+- Code: [github.com/AbhisekMishra/genz-model](https://github.com/AbhisekMishra/genz-model)
 
 This post is about the two bugs that taught me the most.
 
