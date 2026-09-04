@@ -6,7 +6,7 @@ import { siteUrl } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Blog — Abhisek Mishra",
-  description: "Notes on agentic AI, RAG systems, and production engineering.",
+  description: "Notes on agentic AI, fine-tuning, and production engineering.",
   alternates: { canonical: `${siteUrl}/blog` },
 };
 
@@ -17,8 +17,8 @@ export default function BlogIndex() {
     <section className="mx-auto max-w-5xl px-6 py-16">
       <h1 className="text-sm font-mono uppercase tracking-widest text-accent">Blog</h1>
       <p className="mt-4 max-w-xl text-muted">
-        Write-ups on what I&apos;m building and learning — agentic AI, RAG, and production
-        engineering.
+        Write-ups on what I&apos;m building and learning — agentic AI, fine-tuning, and
+        production engineering.
       </p>
 
       {posts.length === 0 ? (

@@ -4,15 +4,15 @@ export const profile = {
   name: "Abhisek Mishra",
   initials: "AM",
   title: "Lead Software Engineer @ Emirates NBD",
-  tagline: "Building agentic AI systems in production — Claude API, MCP, RAG, LangGraph",
+  tagline: "Building agentic AI systems in production — Claude API, MCP, LangGraph",
   location: "Dubai, United Arab Emirates",
   email: "abhisekmishra55@gmail.com",
   phone: "+971 58 667 9577",
   linkedin: "https://www.linkedin.com/in/abhisek-mishra-64a97873",
   github: "https://github.com/AbhisekMishra",
   summary: [
-    "I build AI systems that ship to production — not demos. At Emirates NBD, I designed and shipped an agentic automation platform for our RFI (Request for Information) process: 6 specialized agents orchestrated through 3 MCP servers and 15+ tools, integrated with 8 external services — cutting analyst cycle time by 40%. It runs in a real bank, under real compliance constraints, used daily.",
-    "Right now I'm building in public: a banking-domain RAG system with retrieval evals, cross-encoder re-ranking, and golden-set gating before go-live, and an agent-driven video synthesis pipeline with end-to-end multi-agent orchestration. I publish a working implementation of everything I learn — reading isn't understanding; building is.",
+    "I build AI systems that ship to production — not demos. At Emirates NBD, I designed and shipped an agentic automation platform for our RFI (Request for Information) process: 6 specialized agents orchestrated through 3 MCP servers and 15+ tools, integrated with 8 external services, with a safety-first architecture of circuit breakers and automated checkpoint recovery. It runs in a real bank, under real compliance constraints, used daily.",
+    "Right now I'm building in public: an AI-powered video clipping pipeline that turns long-form video into short-form clips automatically (LangGraph, FastAPI, FFmpeg), and a QLoRA fine-tune of a small language model, published end to end — data pipeline, training, evaluation, and deployment. I publish a working implementation of everything I learn — reading isn't understanding; building is.",
     "The foundation under this is 13+ years of enterprise engineering: event-driven microservices, end-to-end banking journeys (customer onboarding, credit cards, personal loans), and leading teams without leaving the code. I've spent my career being the person who both talks to stakeholders and writes the implementation — production discipline plus frontier-AI fluency.",
   ],
 };
@@ -30,40 +30,20 @@ export const experience: Experience[] = [
   {
     role: "Lead Software Engineer",
     company: "Emirates NBD",
-    period: "Jul 2024 — Present",
+    period: "Jul 2019 — Present",
     location: "Dubai, UAE",
     bullets: [
-      "Designed and shipped an agentic AI platform automating the RFI process end-to-end: 6 specialized agents, 3 MCP servers, 15+ tools, integrated with 8 external services — reduced analyst cycle time by 40%.",
-      "Architected the agent orchestration layer (task decomposition, tool routing, human-in-the-loop approval) to operate within banking compliance and audit constraints.",
-      "Define backend strategy and end-to-end architecture for customer onboarding, credit cards, and personal loans journeys serving retail banking at scale.",
-      "Standardized engineering practices across teams: observability frameworks, API strategy, CI/CD, and code review standards.",
-      "Mentor engineers on AI-assisted development workflows (Claude Code, agentic tooling) — hands-on, in the codebase, not from slides.",
+      "Designed and shipped a production, multi-agent platform automating high-stakes banking RFIs (Sanctions Screening, AML, KYC): 6 specialized agents via LangGraph, 3 MCP servers exposing 15+ secure banking and compliance tools, safety-first architecture with circuit breakers across 8 external services and automated checkpoint recovery.",
+      "Architected a bank-wide Claude Code plugin — CLAUDE.md context standards, reusable Skills, subagents, and hooks — to standardize Java-to-Node.js legacy service migrations with deterministic, review-consistent output; adopted across the engineering organization.",
+      "Architected a highly scalable, event-driven microservices platform (Node.js, MongoDB, Redis) underpinning the bank's Tablet Banking, ATM servicing, and CRM systems.",
+      "Championed Domain-Driven Design and service resiliency practices; mentored backend engineers on API standards, logging, and error-handling frameworks.",
+      "Served as go-to backend lead for cross-squad collaboration, aligning architects, product owners, and QA with strategic objectives.",
     ],
   },
   {
-    role: "Senior Software Engineer",
-    company: "Emirates NBD",
-    period: "Jun 2021 — Jul 2024",
-    location: "Dubai, UAE",
-    bullets: [
-      "Built and scaled event-driven microservices (Node.js, Kafka, Kubernetes) powering core retail banking journeys — onboarding, cards, loans.",
-      "Led backend delivery for high-traffic customer-facing platforms with strict availability and regulatory requirements.",
-      "Drove adoption of GraphQL APIs and modern frontend integration patterns (React) across product teams.",
-    ],
-  },
-  {
-    role: "Consultant",
-    company: "Emirates NBD",
-    period: "Jul 2019 — Jun 2021",
-    location: "Dubai, UAE",
-    bullets: [
-      "Delivered full-stack features across enterprise banking applications; grew from delivery contributor to owning backend design for key journeys.",
-    ],
-  },
-  {
-    role: "Consultant, Full Stack Engineer",
-    company: "Xebia",
-    period: "Dec 2018 — Jul 2019",
+    role: "Full Stack Engineer",
+    company: "Xebia Inc.",
+    period: "Dec 2018 — Jun 2019",
     location: "Abu Dhabi, UAE",
     bullets: [
       "Full-stack development and delivery across banking and enterprise client engagements, including financial-services platforms for Canadian Imperial Bank of Commerce (CIBC).",
@@ -71,7 +51,7 @@ export const experience: Experience[] = [
     ],
   },
   {
-    role: "IT Analyst, Full Stack Engineer",
+    role: "Full Stack Engineer",
     company: "Tata Consultancy Services",
     period: "Mar 2014 — Dec 2018",
     location: "Bhubaneswar, Odisha, India",
@@ -96,14 +76,12 @@ export const skillGroups: SkillGroup[] = [
   {
     label: "AI & Agentic Systems",
     skills: [
-      "Claude API",
-      "Model Context Protocol (MCP)",
-      "LangGraph",
       "Multi-Agent Systems",
-      "RAG / Vector Databases",
-      "AWS Bedrock",
-      "Temporal.io (Durable Execution)",
+      "LangGraph",
+      "LLM Integration (Llama, GPT, Claude)",
+      "Model Context Protocol (MCP)",
       "Claude Code / Cursor",
+      "Playwright MCP",
     ],
   },
   {
@@ -114,8 +92,6 @@ export const skillGroups: SkillGroup[] = [
       "Python",
       "Event-Driven Microservices",
       "Domain-Driven Design",
-      "Kafka",
-      "Kubernetes",
       "GraphQL",
       "MongoDB",
       "Redis",
@@ -147,6 +123,7 @@ export type Project = {
   bullets: string[];
   tags: string[];
   link?: { label: string; url: string };
+  demoUrl?: string;
   writeupSlug?: string;
 };
 
@@ -158,40 +135,28 @@ export const projects: Project[] = [
     description:
       "A production-grade, multi-agent platform automating high-stakes banking Requests for Information (RFIs) for Sanctions Screening, AML, and KYC.",
     bullets: [
-      "Orchestrated 6 specialized agents via LangGraph, with 3 MCP servers exposing 15+ secure banking and compliance tools to the LLM.",
-      "Engineered a safety-first architecture with circuit breakers for 8 external services and automated checkpoint recovery for long-running workflows.",
+      "Orchestrated 6 specialized agents via LangGraph, with 3 MCP servers exposing 15+ secure banking and compliance tools to the LLM — question generation runs on Llama, with a GPT-based reflection agent critiquing and refining output before a human review gate.",
+      "Engineered a safety-first architecture with circuit breakers across 8 external services and automated checkpoint recovery for long-running workflows.",
       "Integrated Playwright MCP for autonomous UI verification and regression testing of the RFI dashboard.",
-      "Cut analyst cycle time by 40%, running daily under real compliance and audit constraints.",
+      "Identified and remediated a prompt-injection vulnerability found in security testing — customer-controllable fields were being interpolated directly into the generation prompt — by treating those fields strictly as data and adding input validation.",
     ],
-    tags: ["LangGraph", "MCP", "Multi-Agent", "AWS Bedrock", "Playwright"],
+    tags: ["LangGraph", "MCP", "Multi-Agent", "Llama", "GPT", "Playwright"],
   },
   {
-    name: "Banking-Domain RAG System",
-    org: "Personal / Learning",
+    name: "AI-Powered Video Clipping Pipeline",
+    org: "Independent — Live",
     status: "Personal Project",
     description:
-      "A retrieval-augmented generation system built for banking-domain question answering, with production-grade evaluation before go-live.",
+      "A 4-node LangGraph workflow that converts long-form video into short-form clips automatically — deployed and live.",
     bullets: [
-      "Retrieval evals and golden-set gating to catch regressions before deployment.",
-      "Cross-encoder re-ranking to improve precision on top-k retrieved passages.",
-      "Built and published in the open as a working reference implementation, not a demo.",
+      "Transcribe → Identify Clips → Detect Focus → Render pipeline: FastAPI/Python backend using faster-whisper for transcription and FFmpeg for rendering.",
+      "Next.js frontend with real-time progress streaming over SSE.",
+      "GPT-4o-mini identifies the strongest segments from the transcript, combined with face/object detection for smart vertical-crop framing.",
+      "On the roadmap: extending with Temporal for durable execution and checkpointed recovery across long-running renders.",
     ],
-    tags: ["RAG", "Vector DB", "Evals", "Python"],
-    link: { label: "GitHub", url: "https://github.com/AbhisekMishra" },
-  },
-  {
-    name: "Autonomous Video Synthesis Engine",
-    org: "Personal / Learning",
-    status: "Personal Project",
-    description:
-      "A distributed engine for automated video clip generation, driven by agentic AI and durable execution.",
-    bullets: [
-      "Used Temporal to manage state and recovery for complex, asynchronous media-processing workflows.",
-      "Implemented AI-powered code review git hooks so agent-logic changes stay within architectural and security standards.",
-      "End-to-end multi-agent orchestration, from generation to review.",
-    ],
-    tags: ["Temporal", "Agentic AI", "Durable Execution"],
-    link: { label: "GitHub", url: "https://github.com/AbhisekMishra" },
+    tags: ["LangGraph", "FastAPI", "FFmpeg", "GPT-4o-mini", "Next.js"],
+    link: { label: "GitHub", url: "https://github.com/AbhisekMishra/video-generator-fe" },
+    demoUrl: "https://video-generator-six-coral.vercel.app/",
   },
   {
     name: "Gen Z Slang Model",
@@ -207,6 +172,19 @@ export const projects: Project[] = [
     tags: ["QLoRA", "Fine-tuning", "Qwen2.5", "LLM"],
     link: { label: "GitHub", url: "https://github.com/AbhisekMishra/genz-model" },
     writeupSlug: "debugging-first-fine-tuned-model",
+  },
+  {
+    name: "Agentic SDLC Standardization",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "A bank-wide Claude Code plugin standardizing legacy service migrations with deterministic, review-consistent output.",
+    bullets: [
+      "Architected a bank-wide Claude Code plugin — CLAUDE.md context standards, reusable Skills, subagents, and hooks — to standardize and structurally enforce Java-to-Node.js legacy service migrations across the engineering organization.",
+      "Built a Git hook to measure Claude-authored vs. manually-written code volume per engineer, feeding into adoption and cadence reporting.",
+      "Estimated ~40% reduction in migration time based on comparative task estimates; adopted bank-wide across the engineering organization.",
+    ],
+    tags: ["Claude Code", "Developer Tooling", "SDLC Standardization"],
   },
   {
     name: "Omnichannel Banking Platform",
