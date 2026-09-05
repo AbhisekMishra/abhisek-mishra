@@ -34,7 +34,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="/resume.pdf"
+            href="/api/resume"
             download="AbhisekMishra.pdf"
             className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
           >
@@ -67,7 +67,7 @@ export default function Navbar() {
               </Link>
             ))}
             <a
-              href="/resume.pdf"
+              href="/api/resume"
               download="AbhisekMishra.pdf"
               className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
             >

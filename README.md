@@ -18,7 +18,7 @@ npm run start   # serve the production build locally
 
 ## Content
 
-All résumé-derived content (experience, skills, projects, education) lives in [`lib/data.ts`](lib/data.ts) — edit that one file to update the site. The résumé PDF served at `/resume.pdf` lives in [`public/resume.pdf`](public/resume.pdf).
+All résumé-derived content (experience, skills, projects, education) lives in [`lib/data.ts`](lib/data.ts) — edit that one file to update both the site and the downloadable résumé. The "Download résumé" button hits [`/api/resume`](app/api/resume/route.tsx), which renders a PDF on the fly from that same data using [`@react-pdf/renderer`](lib/resume-pdf.tsx) — there's no static PDF to keep in sync.
 
 ## Blog
 
@@ -56,4 +56,4 @@ vercel --prod # promote to production
 3. Framework preset should auto-detect as Next.js. Keep the project name as `abhisek-mishra`.
 4. Deploy.
 
-No environment variables or external services are required — the site is fully static/SSG.
+No environment variables or external services are required. Every page is static/SSG except `/api/resume`, which renders on demand (Node.js runtime).
