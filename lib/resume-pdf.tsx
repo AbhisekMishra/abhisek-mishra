@@ -13,31 +13,31 @@ import {
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 34,
-    paddingBottom: 34,
-    paddingHorizontal: 42,
-    fontSize: 9.5,
+    paddingTop: 20,
+    paddingBottom: 18,
+    paddingHorizontal: 36,
+    fontSize: 8.4,
     fontFamily: "Helvetica",
     color: "#1a1a1a",
   },
   name: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 20,
+    fontSize: 16,
   },
   title: {
-    fontSize: 11,
+    fontSize: 9,
     color: "#333333",
-    marginTop: 2,
+    marginTop: 1,
   },
   contactRow: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 6,
-    fontSize: 8.5,
+    marginTop: 3,
+    fontSize: 7.5,
     color: "#444444",
   },
   contactItem: {
-    marginRight: 10,
+    marginRight: 9,
   },
   link: {
     color: "#444444",
@@ -45,33 +45,34 @@ const styles = StyleSheet.create({
   },
   sectionHeading: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 9,
+    fontSize: 7.75,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    letterSpacing: 0.8,
     color: "#8a5a12",
     borderBottomWidth: 1,
     borderBottomColor: "#d8d8d8",
-    paddingBottom: 3,
-    marginTop: 12,
-    marginBottom: 6,
+    paddingBottom: 2,
+    marginTop: 5,
+    marginBottom: 2.5,
   },
   paragraph: {
-    marginBottom: 5,
-    lineHeight: 1.35,
+    marginBottom: 2.5,
+    lineHeight: 1.08,
   },
   skillGroup: {
-    marginBottom: 3,
+    marginBottom: 1.2,
     flexDirection: "row",
   },
   skillGroupLabel: {
     fontFamily: "Helvetica-Bold",
-    width: 130,
+    width: 108,
   },
   skillGroupValue: {
     flex: 1,
+    lineHeight: 1.08,
   },
   entry: {
-    marginBottom: 8,
+    marginBottom: 3,
   },
   entryHeaderRow: {
     flexDirection: "row",
@@ -79,21 +80,22 @@ const styles = StyleSheet.create({
   },
   entryTitle: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 10,
+    fontSize: 8.75,
   },
   entryMeta: {
-    fontSize: 8.5,
+    fontSize: 7.25,
     color: "#555555",
     textAlign: "right",
   },
   entrySubtitle: {
-    fontSize: 9,
+    fontSize: 7.75,
     color: "#8a5a12",
-    marginTop: 1,
+    marginTop: 0.5,
+    lineHeight: 1.08,
   },
   bulletRow: {
     flexDirection: "row",
-    marginTop: 3,
+    marginTop: 1.2,
     paddingLeft: 2,
   },
   bulletDot: {
@@ -101,12 +103,12 @@ const styles = StyleSheet.create({
   },
   bulletText: {
     flex: 1,
-    lineHeight: 1.3,
+    lineHeight: 1.08,
   },
   tagsLine: {
-    fontSize: 8,
+    fontSize: 6.75,
     color: "#777777",
-    marginTop: 3,
+    marginTop: 1.2,
   },
 });
 
@@ -126,14 +128,18 @@ function Bullet({ children }: { children: string }) {
 }
 
 function SectionHeading({ children }: { children: string }) {
-  return <Text style={styles.sectionHeading}>{children}</Text>;
+  return (
+    <Text style={styles.sectionHeading} minPresenceAhead={30}>
+      {children}
+    </Text>
+  );
 }
 
 function ExperienceEntry({ role }: { role: Experience }) {
   return (
     <View style={styles.entry}>
       <View style={styles.entryHeaderRow}>
-        <Text style={styles.entryTitle}>
+        <Text style={styles.entryTitle} minPresenceAhead={20}>
           {role.role} — {role.company}
         </Text>
         <Text style={styles.entryMeta}>
@@ -151,7 +157,9 @@ function ProjectEntry({ project }: { project: Project }) {
   return (
     <View style={styles.entry}>
       <View style={styles.entryHeaderRow}>
-        <Text style={styles.entryTitle}>{project.name}</Text>
+        <Text style={styles.entryTitle} minPresenceAhead={20}>
+          {project.name}
+        </Text>
         <Text style={styles.entryMeta}>{project.org}</Text>
       </View>
       <Text style={styles.entrySubtitle}>{pdfSafe(project.description)}</Text>
@@ -200,30 +208,22 @@ export function ResumeDocument() {
           </View>
         ))}
 
-        <View wrap={false}>
-          <SectionHeading>Experience</SectionHeading>
-          <ExperienceEntry role={experience[0]} />
-        </View>
-        {experience.slice(1).map((role) => (
-          <View key={`${role.company}-${role.role}`} wrap={false}>
-            <ExperienceEntry role={role} />
-          </View>
+        <SectionHeading>Experience</SectionHeading>
+        {experience.map((role) => (
+          <ExperienceEntry key={`${role.company}-${role.role}`} role={role} />
         ))}
 
-        <View wrap={false}>
-          <SectionHeading>Featured Projects</SectionHeading>
-          <ProjectEntry project={projects[0]} />
-        </View>
-        {projects.slice(1).map((project) => (
-          <View key={project.name} wrap={false}>
-            <ProjectEntry project={project} />
-          </View>
+        <SectionHeading>Featured Projects</SectionHeading>
+        {projects.map((project) => (
+          <ProjectEntry key={project.name} project={project} />
         ))}
 
         <SectionHeading>Education</SectionHeading>
         <View style={styles.entry}>
           <View style={styles.entryHeaderRow}>
-            <Text style={styles.entryTitle}>{education.degree}</Text>
+            <Text style={styles.entryTitle} minPresenceAhead={20}>
+              {education.degree}
+            </Text>
             <Text style={styles.entryMeta}>{education.period}</Text>
           </View>
           <Text style={styles.entrySubtitle}>
