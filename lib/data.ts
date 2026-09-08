@@ -79,6 +79,7 @@ export const skillGroups: SkillGroup[] = [
       "Multi-Agent Systems",
       "LangGraph",
       "LLM Integration (Llama, GPT, Claude)",
+      "AWS Bedrock",
       "Model Context Protocol (MCP)",
       "Claude Code / Cursor",
       "Playwright MCP",
@@ -124,6 +125,7 @@ export type Project = {
   tags: string[];
   link?: { label: string; url: string };
   demoUrl?: string;
+  npmUrl?: string;
   writeupSlug?: string;
 };
 
@@ -172,6 +174,21 @@ export const projects: Project[] = [
     tags: ["QLoRA", "Fine-tuning", "Qwen2.5", "LLM"],
     link: { label: "GitHub", url: "https://github.com/AbhisekMishra/genz-model" },
     writeupSlug: "debugging-first-fine-tuned-model",
+  },
+  {
+    name: "RAG Strategy Playground",
+    org: "Independent — Published",
+    status: "Personal Project",
+    description:
+      "A hands-on field guide to RAG, built inside a working app — every retrieval and evaluation technique implemented as a switchable strategy rather than a slide.",
+    bullets: [
+      "Built rag-ollama-js to implement and compare RAG strategies against the same document set inside one codebase, instead of reading about them.",
+      "46+ GitHub stars and 15 forks — public signal from other engineers building similar systems.",
+      "Spun out the evaluation layer into raglens, a RAGAS-style RAG evaluation library for TypeScript, published to npm (provider-agnostic, zero required runtime dependencies).",
+    ],
+    tags: ["RAG", "TypeScript", "Ollama", "Evals", "npm"],
+    link: { label: "GitHub", url: "https://github.com/AbhisekMishra/rag-ollama-js" },
+    npmUrl: "https://www.npmjs.com/package/raglens",
   },
   {
     name: "Agentic SDLC Standardization",

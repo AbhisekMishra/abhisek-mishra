@@ -39,7 +39,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         ))}
       </div>
 
-      {project.link || project.demoUrl || project.writeupSlug ? (
+      {project.link || project.demoUrl || project.npmUrl || project.writeupSlug ? (
         <div className="mt-5 flex flex-wrap items-center gap-4">
           {project.demoUrl && (
             <a
@@ -49,6 +49,17 @@ export default function ProjectCard({ project }: { project: Project }) {
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:opacity-80"
             >
               Live demo
+              <ExternalLink size={13} />
+            </a>
+          )}
+          {project.npmUrl && (
+            <a
+              href={project.npmUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:opacity-80"
+            >
+              npm
               <ExternalLink size={13} />
             </a>
           )}
