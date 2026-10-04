@@ -10,6 +10,9 @@ export type PostMeta = {
   date: string;
   summary: string;
   order?: number;
+  /** Search-friendly <title> and meta description; the on-page headline stays `title`. */
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 function listPostFiles(): string[] {
@@ -47,6 +50,8 @@ export function getPostBySlug(slug: string): { meta: PostMeta; content: string }
       title: data.title as string,
       date: data.date as string,
       summary: data.summary as string,
+      seoTitle: data.seoTitle as string | undefined,
+      seoDescription: data.seoDescription as string | undefined,
     },
     content,
   };

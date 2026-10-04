@@ -20,16 +20,17 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return {};
 
-  const title = `${post.meta.title} — Abhisek Mishra`;
+  const title = post.meta.seoTitle ?? `${post.meta.title} — Abhisek Mishra`;
+  const description = post.meta.seoDescription ?? post.meta.summary;
   const url = `${siteUrl}/blog/${slug}`;
 
   return {
     title,
-    description: post.meta.summary,
+    description,
     alternates: { canonical: url },
     openGraph: {
       title,
-      description: post.meta.summary,
+      description,
       url,
       type: "article",
       publishedTime: post.meta.date,
@@ -37,7 +38,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description: post.meta.summary,
+      description,
     },
   };
 }
@@ -56,7 +57,8 @@ export default async function BlogPost({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.meta.title,
-    description: post.meta.summary,
+    description: post.meta.seoDescription ?? post.meta.summary,
+    image: `${url}/opengraph-image`,
     datePublished: post.meta.date,
     dateModified: post.meta.date,
     url,
