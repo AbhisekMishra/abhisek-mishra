@@ -9,6 +9,7 @@ export type PostMeta = {
   title: string;
   date: string;
   summary: string;
+  order?: number;
 };
 
 function listPostFiles(): string[] {
@@ -26,9 +27,11 @@ export function getAllPosts(): PostMeta[] {
         title: data.title as string,
         date: data.date as string,
         summary: data.summary as string,
+        // Optional: breaks ties between posts published on the same day (higher = listed first).
+        order: Number(data.order ?? 0),
       };
     })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    .sort((a, b) => (a.date === b.date ? b.order - a.order : a.date < b.date ? 1 : -1));
 }
 
 export function getPostBySlug(slug: string): { meta: PostMeta; content: string } | null {

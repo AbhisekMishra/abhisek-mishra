@@ -8,6 +8,14 @@ import {
   IdSwapExperiment,
   ApiCompare,
 } from "@/components/blog/agent-loop-visuals";
+import {
+  GuardrailsHero,
+  GuardrailPipeline,
+  SoftVsHard,
+  HistoryFilter,
+  WindowCut,
+  SummarizeFlow,
+} from "@/components/blog/agent-guardrails-visuals";
 
 export const mdxComponents = {
   Callout,
@@ -16,6 +24,12 @@ export const mdxComponents = {
   CoatCheck,
   IdSwapExperiment,
   ApiCompare,
+  GuardrailsHero,
+  GuardrailPipeline,
+  SoftVsHard,
+  HistoryFilter,
+  WindowCut,
+  SummarizeFlow,
 };
 
 export const mdxOptions: MDXRemoteProps["options"] = {
