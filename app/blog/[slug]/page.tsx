@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
+import { mdxComponents, mdxOptions } from "@/lib/mdx";
 import { profile, siteUrl } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -85,8 +86,8 @@ export default async function BlogPost({
       <p className="mt-6 text-xs text-muted">{post.meta.date}</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">{post.meta.title}</h1>
 
-      <div className="prose prose-neutral mt-8 max-w-none dark:prose-invert">
-        <MDXRemote source={post.content} />
+      <div className="prose prose-neutral mt-8 max-w-none prose-h2:mt-12 prose-h2:tracking-tight prose-a:text-accent dark:prose-invert">
+        <MDXRemote source={post.content} components={mdxComponents} options={mdxOptions} />
       </div>
     </article>
   );
