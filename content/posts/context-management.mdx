@@ -1,0 +1,142 @@
+---
+title: "Keeping an agent's context small"
+date: "2026-10-05"
+summary: "Sliding windows, summaries and the other ways to stop a conversation from outgrowing the model, with which ones I built and which I haven't."
+seoTitle: "AI Agent Context Management: Sliding Window, Summaries and More"
+seoDescription: "Ways to keep an AI agent's context small: sliding window, summaries, trimming tool results, token counting, external memory. What each costs and what I built."
+---
+
+<ContextHero />
+
+*A map of the options, what each one costs, and where my own agent stands.*
+
+An agent's memory is just a list of messages that gets sent to the model on every call. It only ever grows. Sooner or later it hits the model's context limit, gets slow, or gets expensive.
+
+This post is a map of the ways to deal with that. I built two of them in a small Node and Ollama agent. The rest I've only read about or sketched, and I'll say which is which.
+
+<Callout title="The short version">
+
+- Every approach does the same thing: decide what the model sees on the next call.
+- Cheapest: drop old messages (sliding window). It forgets everything it drops.
+- Smarter: summarize old messages. It keeps the facts, and costs one extra model call.
+- Often the biggest win is trimming old tool results, because they are usually the bulkiest messages.
+- Counting messages is a rough proxy. Counting tokens is what the model's limit actually cares about.
+- Storing facts outside the conversation and fetching them when needed scales further than any trick on the message list.
+- Whatever you pick, the system prompt stays first and untouched, and a tool call is never separated from its result.
+
+</Callout>
+
+<OptionsMap />
+
+## The two rules that apply to everything
+
+**1. The system prompt is not part of the trimming.** It's always the first message and it's never summarized or dropped. Anything you add, like a summary, goes next to it, not in place of it.
+
+**2. Never split a tool call from its result.** A tool call is an assistant message. Its result is a separate `tool` message. If you cut between them, the model sees a result with no request, or a request with no result, and may get confused or error out. Cut at a user message and you're safe.
+
+## What I built
+
+### 1. Sliding window
+
+Keep the system prompt and the last N messages. Drop the rest.
+
+- **Good for:** short chats, simple bots, anything where old context really doesn't matter.
+- **Cost:** none. No extra model call.
+- **Downside:** it forgets. If the user mentioned their name 30 messages ago and the window moved on, it's gone.
+- **In my app:** built, behind a setting: `STRATEGY = "window"`.
+
+### 2. Summarizing (compaction)
+
+When the live messages pass a limit, ask the model to summarize the older ones. Replace them, for the model's view, with that summary. Keep the most recent messages word for word.
+
+- **Good for:** longer conversations where facts, names and decisions matter.
+- **Cost:** one extra model call on the turn that triggers it, so that one reply is slower.
+- **Downside:** summaries lose detail. Numbers and exact wording are the usual casualties, so the summarizer prompt has to say "keep names, numbers and decisions".
+- **In my app:** built, `STRATEGY = "summarize"`. Each new summary is fed the previous one, so facts carry forward. I wrote up the step-by-step in the [guardrails post](/blog/agent-guardrails).
+
+## What exists but I haven't built
+
+### 3. Trim old tool results
+
+After a few turns, the tool result messages are usually the largest and least useful ones. The model already used them to write an answer. Replace old ones with a short placeholder, and drop the `thinking` field some models return.
+
+An untested sketch of the idea:
+
+```typescript
+function trimOldToolResults(messages: Msg[], keepLast: number): Msg[] {
+  const lastUser = messages.findLastIndex((m) => m.role === "user");
+  return messages.map((m, i) =>
+    m.role === "tool" && i < lastUser - keepLast
+      ? { ...m, content: "[tool result removed]" }
+      : m
+  );
+}
+```
+
+<ToolResultTrim />
+
+- **Good for:** an easy first step before anything fancier. It often buys a lot of room.
+- **Downside:** if the model needs the old result again, it can't see it. It would have to call the tool again.
+
+### 4. Count tokens, not messages
+
+My window counts messages. But ten short messages and ten messages with big tool results are very different sizes. The model's limit is in tokens.
+
+- A rough estimate is characters divided by 4.
+- Ollama reports real counts in its response (`prompt_eval_count`), so you can measure what you actually sent.
+- Trigger compaction at around 70 to 80 percent of the context window, not at 100 percent.
+
+<CompactAt />
+
+### 5. Limit the size of tool results at the source
+
+Instead of trimming later, don't let huge results in. Cut or paginate big tool outputs before they enter the conversation. A tool that returns a whole table when the model needed one row is the kind of thing that fills a context window by itself.
+
+### 6. Store facts outside the conversation
+
+Instead of keeping everything in the message list, save facts somewhere else and bring back only what's relevant:
+
+- **A notes file or database:** the agent writes down key facts ("user prefers metric units") and they're added to the system prompt each time. Simple, and it survives across sessions.
+- **Retrieval:** store past conversations or documents as embeddings and fetch the few most relevant pieces for each new question. This is the same idea as RAG, applied to the agent's own history.
+
+<ExternalMemory />
+
+This scales further than any trick on the message list, because the conversation can stay short while the memory grows. The cost is more moving parts, and the risk that retrieval brings back the wrong thing.
+
+### 7. Give sub-tasks their own context
+
+If one part of a job is long and messy, hand it to a separate agent call with a fresh context. It does the work, and only its conclusion comes back into the main conversation. The main context stays small because the noise never enters it.
+
+### 8. Check the model's real limit
+
+This one is easy to miss. In Ollama, the context size is a setting (`num_ctx`), and the default may be smaller than the model's maximum. If a prompt is longer than what's set, it may be cut without an error. Look up the default for your version, and raise it if you need to. A bigger context uses more memory.
+
+## How I'd choose
+
+Start simple and move up only when you feel the problem.
+
+1. **Short conversations:** do nothing, or use a sliding window.
+2. **Tool results are bulky:** trim old tool results, and limit sizes at the source.
+3. **Facts must survive:** add summarizing.
+4. **Needs to last across sessions, or the history is huge:** store facts outside the conversation.
+5. **One messy sub-task:** give it its own context.
+
+A sliding window and summarizing cover a surprising amount. I'd add the others only when logs show a real problem.
+
+## Where my agent stands
+
+- **Built:** sliding window, summarizing, a toggle between them.
+- **Not built:** trimming old tool results, token counting, size limits on tool outputs, external memory, sub-agents.
+- **Not checked:** what the default context size is for my Ollama version.
+
+## Takeaways
+
+- Context management is deciding what the model sees on the next call.
+- The system prompt always stays first and untouched.
+- Never separate a tool call from its result. Cut at user messages.
+- Window = free but forgets. Summary = keeps facts but costs a call and loses detail.
+- Trim old tool results before reaching for anything fancier.
+- Count tokens when it matters. Messages are only a rough guide.
+- Facts you need long term belong outside the conversation.
+
+*Next up: adding the missing pieces, starting with token counting.*

@@ -16,6 +16,13 @@ import {
   WindowCut,
   SummarizeFlow,
 } from "@/components/blog/agent-guardrails-visuals";
+import {
+  ContextHero,
+  OptionsMap,
+  ToolResultTrim,
+  CompactAt,
+  ExternalMemory,
+} from "@/components/blog/context-management-visuals";
 
 export const mdxComponents = {
   Callout,
@@ -30,6 +37,11 @@ export const mdxComponents = {
   HistoryFilter,
   WindowCut,
   SummarizeFlow,
+  ContextHero,
+  OptionsMap,
+  ToolResultTrim,
+  CompactAt,
+  ExternalMemory,
 };
 
 export const mdxOptions: MDXRemoteProps["options"] = {

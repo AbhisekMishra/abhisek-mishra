@@ -211,7 +211,80 @@ Three choices in there are worth explaining.
 - **The history stays complete.** The summary is one extra row in the list, so the browser table still shows every original message. Only the model's view is shortened.
 - **The next summary includes the last one.** When the limit is hit again, the old summary is fed into the new one, so details carry forward.
 
-I tested it on a fake conversation with real model calls. Two turns about Alice's and Bob's scores became "Alice: math 92, science 88. Bob: math 75, science 81." After more turns, the next summary kept those numbers and added "Alice leads in both subjects."
+#### A step-by-step example
+
+I tested this on a fake conversation with real model calls. The limit was 5 live messages, keeping about 2. Here is what happened. In these listings, `assistant (tool call)` is an assistant message with no text, only a request to run a tool.
+
+**Step 1: the history grows past the limit.** Two turns about Alice and Bob are done, and the user has just asked a third question. There are 9 live messages after the system prompt, which is more than 5.
+
+```
+system      You are a helpful assistant...
+user        scores of alice
+assistant   (tool call)
+tool        {"name":"get_scores", ... "result":"{\"math\":92,\"science\":88}"}
+assistant   Alice: math 92, science 88.
+user        and bob?
+assistant   (tool call)
+tool        {"name":"get_scores", ... "result":"{\"math\":75,\"science\":81}"}
+assistant   Bob: math 75, science 81.
+user        who is better in math?
+```
+
+**Step 2: find where to cut.** I want to keep about the last 2 messages. The code looks for the first user message at or after that point. That's "who is better in math?", so everything before it gets summarized. The cut lands on a user message, so no tool call is separated from its result.
+
+**Step 3: summarize the old part.** Everything above "who is better in math?" is turned into a transcript and sent to the model with the summarizer prompt. It comes back with:
+
+```
+Alice: math 92, science 88. Bob: math 75, science 81.
+```
+
+**Step 4: insert the summary.** The history keeps every original message. A `summary` row is added just before the part that was kept:
+
+```
+system      You are a helpful assistant...
+user        scores of alice
+  ... (the first 8 messages, unchanged, still shown in the table) ...
+assistant   Bob: math 75, science 81.
+summary     Alice: math 92, science 88. Bob: math 75, science 81.
+user        who is better in math?
+```
+
+**Step 5: build what the model actually sees.** The code takes the system prompt, appends the latest summary to it, and adds only the messages after the summary. The model gets 2 messages, not 10:
+
+```
+system      You are a helpful assistant...
+
+            Summary of the earlier conversation:
+            Alice: math 92, science 88. Bob: math 75, science 81.
+user        who is better in math?
+```
+
+The system prompt text itself is unchanged. The summary is just added below it.
+
+**Round two: the next time the limit is hit.** The conversation continues. The model answers "Alice is better in math." The user asks "and in science?", then "what about carol?" Counting from the summary row, there are 10 live messages, over the limit again.
+
+This time the "keep the last 2" rule can't find a user message at or after that point. The last 2 messages are tool and assistant messages from the current turn. So the code falls back to the last user message, "what about carol?", and keeps that whole turn. Nothing is cut in the middle of it.
+
+Everything before that turn is summarized, together with the old summary, which is fed in as "Previous summary". The new summary keeps the old facts and adds the new one:
+
+```
+Alice: math 92, science 88. Bob: math 75, science 81. Alice leads in both subjects.
+```
+
+The model's view is now the system prompt with that summary, plus the 4 messages of the current turn:
+
+```
+system      You are a helpful assistant...
+
+            Summary of the earlier conversation:
+            Alice: math 92, science 88. Bob: math 75, science 81. Alice leads in both subjects.
+user        what about carol?
+assistant   (tool call)
+tool        {"name":"get_scores", ... "result":"\"student not found\""}
+assistant   No student named carol exists.
+```
+
+Two things to notice. The browser's table still holds every message plus both summary rows. And each summary builds on the one before it, so details survive, as long as the summarizer prompt asks it to keep names and numbers.
 
 Both live behind one setting:
 
