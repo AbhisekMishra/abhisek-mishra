@@ -78,7 +78,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       "Multi-Agent Systems",
       "LangGraph",
-      "LLM Integration (Llama, GPT, Claude)",
+      "LLM Integration (Gemma, GPT, Claude)",
       "AWS Bedrock",
       "Model Context Protocol (MCP)",
       "Claude Code / Cursor",
@@ -137,12 +137,12 @@ export const projects: Project[] = [
     description:
       "A production-grade, multi-agent platform automating high-stakes banking Requests for Information (RFIs) for Sanctions Screening, AML, and KYC.",
     bullets: [
-      "Orchestrated 6 specialized agents via LangGraph, with 3 MCP servers exposing 15+ secure banking and compliance tools to the LLM — question generation runs on Llama, with a GPT-based reflection agent critiquing and refining output before a human review gate.",
+      "Orchestrated 6 specialized agents via LangGraph, with 3 MCP servers exposing 15+ secure banking and compliance tools to the LLM — question generation runs on Gemma, with a GPT-based reflection agent critiquing and refining output before a human review gate.",
       "Engineered a safety-first architecture with circuit breakers across 8 external services and automated checkpoint recovery for long-running workflows.",
       "Integrated Playwright MCP for autonomous UI verification and regression testing of the RFI dashboard.",
       "Identified and remediated a prompt-injection vulnerability found in security testing — customer-controllable fields were being interpolated directly into the generation prompt — by treating those fields strictly as data and adding input validation.",
     ],
-    tags: ["LangGraph", "MCP", "Multi-Agent", "Llama", "GPT", "Playwright"],
+    tags: ["LangGraph", "MCP", "Multi-Agent", "Gemma", "GPT", "Playwright"],
   },
   {
     name: "AI-Powered Video Clipping Pipeline",
