@@ -11,9 +11,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/abhisek-mishra-64a97873",
   github: "https://github.com/AbhisekMishra",
   summary: [
-    "I build AI systems that ship to production — not demos. At Emirates NBD, I designed and shipped an agentic automation platform for our RFI (Request for Information) process: 6 specialized agents orchestrated through 3 MCP servers and 15+ tools, integrated with 8 external services, with a safety-first architecture of circuit breakers and automated checkpoint recovery. It runs in a real bank, under real compliance constraints, used daily.",
-    "Right now I'm building in public: an AI-powered video clipping pipeline that turns long-form video into short-form clips automatically (LangGraph, FastAPI, FFmpeg), and a QLoRA fine-tune of a small language model, published end to end — data pipeline, training, evaluation, and deployment. I publish a working implementation of everything I learn — reading isn't understanding; building is.",
-    "The foundation under this is 13+ years of enterprise engineering: event-driven microservices, end-to-end banking journeys (customer onboarding, credit cards, personal loans), and leading teams without leaving the code. I've spent my career being the person who both talks to stakeholders and writes the implementation — production discipline plus frontier-AI fluency.",
+    "I design and ship AI systems for regulated environments: production systems, not demos. At Emirates NBD I moved the bank's RFI process for Sanctions, AML and KYC from two manual teams to an agentic workflow that now needs about a fifth of the original effort. I built it as a reusable framework, with evals, Langfuse observability and a human review gate in place from the start, and with generation running on Gemma inside the bank's own environment.",
+    "My work spans AI and core banking platforms. I'm leading the bank's move from vendor payment products to a payments platform built in-house. I built Agent Assist, a RAG assistant that sourcing agents across the bank use for current product information, and a Claude Code plugin that is now the mandatory standard for Java-to-Node.js migrations. Before that, I was one of the founding engineers of Tablet Banking.",
+    "That sits on 13+ years of enterprise engineering. I joined Emirates NBD as a Software Engineer, grew to Lead, and I still write code. Outside work I build in public: a RAG strategy playground with an npm evaluation library, an AI video clipping pipeline, and posts on building agents from first principles. Reading isn't understanding; building is.",
   ],
 };
 
@@ -33,11 +33,14 @@ export const experience: Experience[] = [
     period: "Jul 2019 — Present",
     location: "Dubai, UAE",
     bullets: [
-      "Designed and shipped a production, multi-agent platform automating high-stakes banking RFIs (Sanctions Screening, AML, KYC): 6 specialized agents via LangGraph, 3 MCP servers exposing 15+ secure banking and compliance tools, safety-first architecture with circuit breakers across 8 external services and automated checkpoint recovery.",
-      "Architected a bank-wide Claude Code plugin — CLAUDE.md context standards, reusable Skills, subagents, and hooks — to standardize Java-to-Node.js legacy service migrations with deterministic, review-consistent output; adopted across the engineering organization.",
-      "Architected a highly scalable, event-driven microservices platform (Node.js, MongoDB, Redis) underpinning the bank's Tablet Banking, ATM servicing, and CRM systems.",
-      "Championed Domain-Driven Design and service resiliency practices; mentored backend engineers on API standards, logging, and error-handling frameworks.",
-      "Served as go-to backend lead for cross-squad collaboration, aligning architects, product owners, and QA with strategic objectives.",
+      "Joined as a Software Engineer; promoted to Senior Software Engineer, then Lead Software Engineer.",
+      "Moved the bank's RFI process for Sanctions, AML and KYC from two manual teams to an agentic workflow (LangGraph, MCP, Gemma, GPT), with evals, Langfuse observability and a human review gate. It now needs about 20% of the original effort.",
+      "Lead delivery and production ownership of the bank's payments platform, including the move from vendor products to a platform built in-house.",
+      "Designed and built a Claude Code plugin that is now the mandatory standard for the bank's Java-to-Node.js migrations, with generated unit tests and hooks that enforce coding standards. Estimated 40% faster migrations.",
+      "Built Agent Assist, a RAG assistant that sourcing agents across the bank use to look up current product information such as credit cards and loans.",
+      "One of the founding engineers of Tablet Banking: designed its event-driven microservices architecture (Node.js, MongoDB, Redis) and later worked across the CRM, ATM and Branch transformation programmes.",
+      "Led and architected the customer onboarding web application, including partner APIs for Amazon, Noon and Co-op with digital KYC.",
+      "Backend technical lead across squads: set API, logging and error-handling standards and mentor engineers.",
     ],
   },
   {
@@ -131,18 +134,98 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "Unified RFI Management System",
+    name: "Agentic RFI Automation Platform",
     org: "Emirates NBD",
     status: "Production",
     description:
-      "A production-grade, multi-agent platform automating high-stakes banking Requests for Information (RFIs) for Sanctions Screening, AML, and KYC.",
+      "An agentic workflow that replaced a two-team manual RFI process for Sanctions, AML and KYC, and now needs about 20% of the original effort.",
     bullets: [
-      "Orchestrated 6 specialized agents via LangGraph, with 3 MCP servers exposing 15+ secure banking and compliance tools to the LLM — question generation runs on Gemma, with a GPT-based reflection agent critiquing and refining output before a human review gate.",
-      "Engineered a safety-first architecture with circuit breakers across 8 external services and automated checkpoint recovery for long-running workflows.",
-      "Integrated Playwright MCP for autonomous UI verification and regression testing of the RFI dashboard.",
-      "Identified and remediated a prompt-injection vulnerability found in security testing — customer-controllable fields were being interpolated directly into the generation prompt — by treating those fields strictly as data and adding input validation.",
+      "Previously one team drafted RFI questions and another sent them to customers, checked each answer against what was asked and chased anything missing. Built as a reusable framework: a new use case is added by changing one agent's rule set, without touching the orchestration.",
+      "Gemma handles generation inside the bank's own environment. A GPT reviewer, which only sees masked data, scores and refines each draft before a human approves it.",
+      "Evals before go-live: a test set of past RFIs with analyst-labelled examples, model-based scoring of every run, and regression runs whenever a prompt, rule set or model changes.",
+      "Langfuse in production: every agent step traced, reviewer decisions recorded as quality feedback, cost and latency tracked per run, and alerts on failed or stalled workflows.",
+      "Circuit breakers on external services, checkpoint recovery for long-running workflows, Playwright MCP for UI regression testing, and a fix for a prompt-injection risk found in security testing: customer-controllable fields are now treated strictly as data.",
     ],
-    tags: ["LangGraph", "MCP", "Multi-Agent", "Gemma", "GPT", "Playwright"],
+    tags: ["LangGraph", "MCP", "Gemma", "GPT", "Langfuse", "Evals"],
+  },
+  {
+    name: "Agent Assist",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "A RAG assistant that sourcing agents across the bank use to look up current product details such as credit cards and loans.",
+    bullets: [
+      "Before it, agents had to ask product teams and sometimes quoted outdated information to customers.",
+      "Product documents are chunked, embedded and retrieved from a vector store, so answers come from current product content rather than the model's own knowledge.",
+      "Answer quality was checked before release against a set of real agent questions with known answers.",
+    ],
+    tags: ["RAG", "GPT", "Python", "Embeddings"],
+  },
+  {
+    name: "Claude Code Migration Standard",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "A Claude Code plugin that is now the mandatory standard for the bank's Java-to-Node.js service migrations.",
+    bullets: [
+      "Packages CLAUDE.md context standards, reusable Skills, subagents and hooks, so every team migrates the same way and the output is consistent and easy to review.",
+      "Quality is built in: the plugin generates unit tests for migrated code, and hooks block output that breaks coding standards before commit.",
+      "A Git hook tracks Claude-authored vs manually-written code per engineer to measure adoption. Estimated ~40% reduction in migration time, based on comparative task estimates.",
+    ],
+    tags: ["Claude Code", "Developer Tooling", "Hooks", "Node.js"],
+  },
+  {
+    name: "Payments Platform",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "The bank's payments platform, covering local and international transfers, bill and merchant payments, card payments and real-time payments.",
+    bullets: [
+      "Lead delivery and production ownership, with 30+ engineers across several squads.",
+      "Leading the move from vendor products to a platform built in-house from scratch while the existing one stays live, for faster changes, lower cost and control over the roadmap.",
+      "Designed around what payments demand: high availability, regulatory compliance and audit trails, idempotent processing so a retry never pays twice, and capacity for peaks such as salary days.",
+    ],
+    tags: ["Payments", "Distributed Systems", "High Availability", "Idempotency"],
+  },
+  {
+    name: "Tablet Banking & Omnichannel Platform",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "Founding engineer of Tablet Banking, one of the bank's flagship products, used across Emirates NBD, Emirates Islamic and KSA, and of the event-driven platform behind it.",
+    bullets: [
+      "Designed the event-driven microservices architecture (Node.js, MongoDB, Redis) underpinning Tablet Banking, ATM servicing and CRM integration, applying Domain-Driven Design and service resiliency patterns.",
+      "Built core backend services, led a squad through delivery, and integrated with core banking, CRM and other internal systems.",
+      "Owned the full lifecycle across multiple modules: design, deployment, monitoring and post-launch support.",
+    ],
+    tags: ["Node.js", "MongoDB", "Redis", "DDD", "Microservices"],
+  },
+  {
+    name: "Customer Onboarding Web Application",
+    org: "Emirates NBD",
+    status: "Production",
+    description:
+      "The bank's customer onboarding web application, including onboarding through partners such as Amazon, Noon and Co-op.",
+    bullets: [
+      "Led and architected the application, including the APIs that partners call to onboard customers.",
+      "Digital KYC built into the onboarding flow.",
+    ],
+    tags: ["Web", "APIs", "KYC", "Partner Integrations"],
+  },
+  {
+    name: "RAG Strategy Playground",
+    org: "Independent — Published",
+    status: "Personal Project",
+    description:
+      "A hands-on field guide to RAG, built inside a working app — every retrieval and evaluation technique implemented as a switchable strategy rather than a slide.",
+    bullets: [
+      "Built rag-ollama-js to implement and compare RAG strategies against the same document set inside one codebase, instead of reading about them.",
+      "46+ GitHub stars and 15 forks — public signal from other engineers building similar systems.",
+      "Spun out the evaluation layer into raglens, a RAGAS-style RAG evaluation library for TypeScript, published to npm (provider-agnostic, zero required runtime dependencies).",
+    ],
+    tags: ["RAG", "TypeScript", "Ollama", "Evals", "npm"],
+    link: { label: "GitHub", url: "https://github.com/AbhisekMishra/rag-ollama-js" },
+    npmUrl: "https://www.npmjs.com/package/raglens",
   },
   {
     name: "AI-Powered Video Clipping Pipeline",
@@ -174,47 +257,6 @@ export const projects: Project[] = [
     tags: ["QLoRA", "Fine-tuning", "Qwen2.5", "LLM"],
     link: { label: "GitHub", url: "https://github.com/AbhisekMishra/genz-model" },
     writeupSlug: "debugging-first-fine-tuned-model",
-  },
-  {
-    name: "RAG Strategy Playground",
-    org: "Independent — Published",
-    status: "Personal Project",
-    description:
-      "A hands-on field guide to RAG, built inside a working app — every retrieval and evaluation technique implemented as a switchable strategy rather than a slide.",
-    bullets: [
-      "Built rag-ollama-js to implement and compare RAG strategies against the same document set inside one codebase, instead of reading about them.",
-      "46+ GitHub stars and 15 forks — public signal from other engineers building similar systems.",
-      "Spun out the evaluation layer into raglens, a RAGAS-style RAG evaluation library for TypeScript, published to npm (provider-agnostic, zero required runtime dependencies).",
-    ],
-    tags: ["RAG", "TypeScript", "Ollama", "Evals", "npm"],
-    link: { label: "GitHub", url: "https://github.com/AbhisekMishra/rag-ollama-js" },
-    npmUrl: "https://www.npmjs.com/package/raglens",
-  },
-  {
-    name: "Agentic SDLC Standardization",
-    org: "Emirates NBD",
-    status: "Production",
-    description:
-      "A bank-wide Claude Code plugin standardizing legacy service migrations with deterministic, review-consistent output.",
-    bullets: [
-      "Architected a bank-wide Claude Code plugin — CLAUDE.md context standards, reusable Skills, subagents, and hooks — to standardize and structurally enforce Java-to-Node.js legacy service migrations across the engineering organization.",
-      "Built a Git hook to measure Claude-authored vs. manually-written code volume per engineer, feeding into adoption and cadence reporting.",
-      "Estimated ~40% reduction in migration time based on comparative task estimates; adopted bank-wide across the engineering organization.",
-    ],
-    tags: ["Claude Code", "Developer Tooling", "SDLC Standardization"],
-  },
-  {
-    name: "Omnichannel Banking Platform",
-    org: "Emirates NBD",
-    status: "Production",
-    description:
-      "A highly scalable, event-driven microservices platform underpinning Tablet Banking, ATM servicing, and CRM integration.",
-    bullets: [
-      "Node.js for high-throughput APIs, MongoDB for flexible data modeling, Redis for distributed caching.",
-      "Applied Domain-Driven Design and service resiliency patterns to decouple core business capabilities.",
-      "Owned the full solution lifecycle across multiple modules — design, deployment, monitoring, and post-launch support.",
-    ],
-    tags: ["Node.js", "MongoDB", "Redis", "DDD", "Microservices"],
   },
 ];
 
