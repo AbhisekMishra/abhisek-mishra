@@ -4,7 +4,10 @@ export const profile = {
   name: "Abhisek Mishra",
   initials: "AM",
   title: "Lead Software Engineer @ Emirates NBD",
-  tagline: "Building agentic AI systems in production — Claude API, MCP, LangGraph",
+  tagline: "Agentic AI and core banking platforms, built for regulated environments",
+  resumeHeadline: "Lead Software Engineer | Agentic AI Systems & Platform Architecture",
+  resumeSummary:
+    "Lead Software Engineer with 13+ years building banking systems, 7+ of them at Emirates NBD, where I grew from Software Engineer to Lead. I design agentic AI systems for regulated environments, with evals, observability and human review built in from the start, and I lead large platform work such as the bank's move from vendor payment products to a platform built in-house. Recent work includes an agentic RFI platform for Sanctions, AML and KYC that needs about 20% of the original manual effort, a RAG assistant for the bank's sourcing agents, and a Claude Code plugin that is now the mandatory standard for Java-to-Node.js migrations.",
   location: "Dubai, United Arab Emirates",
   email: "abhisekmishra55@gmail.com",
   phone: "+971 58 667 9577",
@@ -24,6 +27,8 @@ export type Experience = {
   period: string;
   location: string;
   bullets: string[];
+  resumeNote?: string;
+  resumeBullets?: string[];
 };
 
 export const experience: Experience[] = [
@@ -32,6 +37,10 @@ export const experience: Experience[] = [
     company: "Emirates NBD",
     period: "Jul 2019 — Present",
     location: "Dubai, UAE",
+    resumeNote: "Joined as Software Engineer; promoted to Senior Software Engineer, then Lead",
+    resumeBullets: [
+      "Backend technical lead across squads: set API, logging and error-handling standards, mentor engineers, and keep architects, product owners and QA aligned on delivery.",
+    ],
     bullets: [
       "Joined as a Software Engineer; promoted to Senior Software Engineer, then Lead Software Engineer.",
       "Moved the bank's RFI process for Sanctions, AML and KYC from two manual teams to an agentic workflow (LangGraph, MCP, Gemma, GPT), with evals, Langfuse observability and a human review gate. It now needs about 20% of the original effort.",
@@ -84,6 +93,10 @@ export const skillGroups: SkillGroup[] = [
       "LLM Integration (Gemma, GPT, Claude)",
       "AWS Bedrock",
       "Model Context Protocol (MCP)",
+      "RAG",
+      "Embeddings & Vector Search",
+      "LLM Evaluation",
+      "Langfuse",
       "Claude Code / Cursor",
       "Playwright MCP",
     ],
@@ -94,6 +107,10 @@ export const skillGroups: SkillGroup[] = [
       "Node.js",
       "TypeScript",
       "Python",
+      "FastAPI",
+      "Distributed Systems",
+      "Payments Systems",
+      "High Availability",
       "Event-Driven Microservices",
       "Domain-Driven Design",
       "GraphQL",
@@ -130,6 +147,7 @@ export type Project = {
   demoUrl?: string;
   npmUrl?: string;
   writeupSlug?: string;
+  inResume?: boolean;
 };
 
 export const projects: Project[] = [
@@ -257,6 +275,7 @@ export const projects: Project[] = [
     tags: ["QLoRA", "Fine-tuning", "Qwen2.5", "LLM"],
     link: { label: "GitHub", url: "https://github.com/AbhisekMishra/genz-model" },
     writeupSlug: "debugging-first-fine-tuned-model",
+    inResume: false,
   },
 ];
 

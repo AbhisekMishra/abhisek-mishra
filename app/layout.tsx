@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 const title = "Abhisek Mishra — Lead Software Engineer, Agentic AI";
 const description =
-  "Lead Software Engineer at Emirates NBD building agentic AI systems in production — Claude API, MCP, LangGraph.";
+  "Lead Software Engineer at Emirates NBD building agentic AI and core banking platforms for regulated environments, with evals and observability built in.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -31,7 +31,9 @@ export const metadata: Metadata = {
     "Agentic AI",
     "LangGraph",
     "Model Context Protocol",
-    "Claude API",
+    "RAG",
+    "LLM Evaluation",
+    "Payments",
     "Emirates NBD",
   ],
   authors: [{ name: "Abhisek Mishra" }],
