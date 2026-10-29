@@ -7,7 +7,7 @@ export const profile = {
   tagline: "Agentic AI and core banking platforms, built for regulated environments",
   resumeHeadline: "Lead Software Engineer | Agentic AI Systems & Platform Architecture",
   resumeSummary:
-    "Lead Software Engineer with 13+ years building banking systems, 7+ of them at Emirates NBD, where I grew from Software Engineer to Lead. I design agentic AI systems for regulated environments, with evals, observability and human review built in from the start, and I lead large platform work such as the bank's move from vendor payment products to a platform built in-house. Recent work includes an agentic RFI platform for Sanctions, AML and KYC that needs about 20% of the original manual effort, a RAG assistant for the bank's sourcing agents, and a Claude Code plugin that is now the mandatory standard for Java-to-Node.js migrations.",
+    "Lead Software Engineer with 13+ years building banking systems, 7+ of them at Emirates NBD, where I joined as a consultant in 2019 and have been Lead Software Engineer since 2024. I design agentic AI systems for regulated environments, with evals, observability and human review built in from the start, and I lead large platform work such as the bank's move from vendor payment products to a platform built in-house. Recent work includes an agentic RFI platform for Sanctions, AML and KYC that needs about 20% of the original manual effort, a RAG assistant for the bank's sourcing agents, and a Claude Code plugin that is now the mandatory standard for Java-to-Node.js migrations.",
   location: "Dubai, United Arab Emirates",
   email: "abhisekmishra55@gmail.com",
   phone: "+971 58 667 9577",
@@ -16,7 +16,7 @@ export const profile = {
   summary: [
     "I design and ship AI systems for regulated environments: production systems, not demos. At Emirates NBD I moved the bank's RFI process for Sanctions, AML and KYC from two manual teams to an agentic workflow that now needs about a fifth of the original effort. I built it as a reusable framework, with evals, Langfuse observability and a human review gate in place from the start, and with generation running on Gemma inside the bank's own environment.",
     "My work spans AI and core banking platforms. I'm leading the bank's move from vendor payment products to a payments platform built in-house. I built Agent Assist, a RAG assistant that sourcing agents across the bank use for current product information, and a Claude Code plugin that is now the mandatory standard for Java-to-Node.js migrations. Before that, I was one of the founding engineers of Tablet Banking.",
-    "That sits on 13+ years of enterprise engineering. I joined Emirates NBD as a Software Engineer, grew to Lead, and I still write code. Outside work I build in public: a RAG strategy playground with an npm evaluation library, an AI video clipping pipeline, and posts on building agents from first principles. Reading isn't understanding; building is.",
+    "That sits on 13+ years of enterprise engineering. I joined Emirates NBD as a consultant in 2019, became Senior Software Engineer in 2021 and Lead in 2024, and I still write code. Outside work I build in public: a RAG strategy playground with an npm evaluation library, an AI video clipping pipeline, and posts on building agents from first principles. Reading isn't understanding; building is.",
   ],
 };
 
@@ -27,7 +27,6 @@ export type Experience = {
   period: string;
   location: string;
   bullets: string[];
-  resumeNote?: string;
   resumeBullets?: string[];
 };
 
@@ -35,40 +34,60 @@ export const experience: Experience[] = [
   {
     role: "Lead Software Engineer",
     company: "Emirates NBD",
-    period: "Jul 2019 — Present",
+    period: "Jul 2024 — Present",
     location: "Dubai, UAE",
-    resumeNote: "Joined as Software Engineer; promoted to Senior Software Engineer, then Lead",
     resumeBullets: [
+      "Lead engineering on agentic AI systems and core banking platforms, from architecture to production ownership (see Selected Work).",
       "Backend technical lead across squads: set API, logging and error-handling standards, mentor engineers, and keep architects, product owners and QA aligned on delivery.",
     ],
     bullets: [
-      "Joined as a Software Engineer; promoted to Senior Software Engineer, then Lead Software Engineer.",
       "Moved the bank's RFI process for Sanctions, AML and KYC from two manual teams to an agentic workflow (LangGraph, MCP, Gemma, GPT), with evals, Langfuse observability and a human review gate. It now needs about 20% of the original effort.",
       "Lead delivery and production ownership of the bank's payments platform, including the move from vendor products to a platform built in-house.",
       "Designed and built a Claude Code plugin that is now the mandatory standard for the bank's Java-to-Node.js migrations, with generated unit tests and hooks that enforce coding standards. Estimated 40% faster migrations.",
       "Built Agent Assist, a RAG assistant that sourcing agents across the bank use to look up current product information such as credit cards and loans.",
-      "One of the founding engineers of Tablet Banking: designed its event-driven microservices architecture (Node.js, MongoDB, Redis) and later worked across the CRM, ATM and Branch transformation programmes.",
       "Led and architected the customer onboarding web application, including partner APIs for Amazon, Noon and Co-op with digital KYC.",
-      "Backend technical lead across squads: set API, logging and error-handling standards and mentor engineers.",
     ],
   },
   {
-    role: "Full Stack Engineer",
-    company: "Xebia Inc.",
-    period: "Dec 2018 — Jun 2019",
+    role: "Senior Software Engineer",
+    company: "Emirates NBD",
+    period: "Jun 2021 — Jul 2024",
+    location: "Dubai, UAE",
+    resumeBullets: [
+      "One of the founding engineers of Tablet Banking (see Selected Work), then worked across the CRM, ATM and Branch transformation programmes, growing from engineer to backend architect and delivery lead.",
+      "Set backend API, logging and error-handling standards and mentored engineers across squads.",
+    ],
+    bullets: [
+      "One of the founding engineers of Tablet Banking, one of the bank's flagship products, now used across Emirates NBD, Emirates Islamic and KSA. Designed its event-driven microservices architecture (Node.js, MongoDB, Redis), built core backend services, led a squad, and integrated it with core banking and CRM.",
+      "Worked across the CRM, ATM and Branch transformation programmes, growing from engineer to backend architect and delivery lead.",
+      "Set backend API, logging and error-handling standards and mentored engineers across squads.",
+    ],
+  },
+  {
+    role: "Consultant",
+    company: "Emirates NBD",
+    period: "Jul 2019 — Jun 2021",
+    location: "Dubai, UAE",
+    bullets: [
+      "Engaged at Emirates NBD through a vendor. Delivered full-stack features across enterprise banking applications and grew from delivery contributor to owning backend design for key journeys.",
+    ],
+  },
+  {
+    role: "Consultant",
+    company: "Xebia",
+    period: "Dec 2018 — Jul 2019",
     location: "Abu Dhabi, UAE",
     bullets: [
-      "Full-stack development and delivery across banking and enterprise client engagements, including financial-services platforms for Canadian Imperial Bank of Commerce (CIBC).",
-      "Built an interactive remittance and precious-metals trading UI (Angular 4/AngularJS, Bootstrap) with RESTful Node.js/Express services and JWT-based authentication.",
+      "Enterprise consulting engagement on a large-scale UAE government digital platform.",
     ],
   },
   {
-    role: "Full Stack Engineer",
+    role: "IT Analyst",
     company: "Tata Consultancy Services",
     period: "Mar 2014 — Dec 2018",
     location: "Bhubaneswar, Odisha, India",
     bullets: [
-      "Delivered full-stack features across enterprise banking applications as part of long-running client engagements.",
+      "Full-stack development and delivery across banking and enterprise client engagements, including financial-services platforms for Canadian Imperial Bank of Commerce (CIBC).",
     ],
   },
   {

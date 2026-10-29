@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: RULE,
     paddingBottom: 3,
-    marginTop: 10,
-    marginBottom: 5,
+    marginTop: 9,
+    marginBottom: 4,
   },
-  paragraph: { fontSize: 9.25, lineHeight: 1.25, color: CHARCOAL },
+  paragraph: { fontSize: 9, lineHeight: 1.22, color: CHARCOAL },
   skillRow: { flexDirection: "row", marginBottom: 3.5 },
   skillLabel: { width: 118, fontFamily: "Helvetica-Bold", fontSize: 8.75, color: CHARCOAL },
   skillValue: { flex: 1, fontSize: 8.75, lineHeight: 1.25, color: MUTED },
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
   roleMeta: { fontSize: 8.75, marginTop: 1.5, marginBottom: 3 },
   company: { fontFamily: "Helvetica-Bold", color: ACCENT },
   metaRest: { color: FAINT },
-  entry: { marginBottom: 6 },
-  sub: { marginTop: 5 },
+  entry: { marginBottom: 5 },
+  sub: { marginTop: 4 },
   subTitle: { fontFamily: "Helvetica-Bold", fontSize: 9.5, color: CHARCOAL },
   stack: { fontSize: 8, color: MUTED, marginTop: 2, paddingLeft: 13 },
-  bulletRow: { flexDirection: "row", marginTop: 2.25, paddingLeft: 3 },
+  bulletRow: { flexDirection: "row", marginTop: 1.75, paddingLeft: 3 },
   bulletDot: { width: 10, color: ACCENT },
-  bulletText: { flex: 1, fontSize: 9.25, lineHeight: 1.22, color: CHARCOAL },
+  bulletText: { flex: 1, fontSize: 9, lineHeight: 1.18, color: CHARCOAL },
   description: { fontSize: 8.75, lineHeight: 1.22, color: MUTED },
   lead: { fontFamily: "Helvetica-Bold", color: CHARCOAL },
   linksRow: { flexDirection: "row", flexWrap: "wrap", marginTop: 2.5 },
@@ -181,23 +181,19 @@ function ProjectWork({ project }: { project: Project }) {
   );
 }
 
-function Role({ role, work }: { role: Experience; work: Project[] }) {
-  const meta = [role.location, role.resumeNote].filter(Boolean).join(" · ");
+function Role({ role }: { role: Experience }) {
   return (
-    <View style={styles.entry} wrap={work.length > 0}>
+    <View style={styles.entry} wrap={false}>
       <View style={styles.roleHead}>
         <Text style={styles.roleTitle}>{role.role}</Text>
         <Text style={styles.roleDates}>{role.period}</Text>
       </View>
       <Text style={styles.roleMeta}>
         <Text style={styles.company}>{role.company}</Text>
-        <Text style={styles.metaRest}> | {meta}</Text>
+        <Text style={styles.metaRest}> | {role.location}</Text>
       </Text>
       {(role.resumeBullets ?? role.bullets).map((bullet) => (
         <Bullet key={bullet.slice(0, 40)}>{bullet}</Bullet>
-      ))}
-      {work.map((project) => (
-        <ProjectWork key={project.name} project={project} />
       ))}
     </View>
   );
@@ -229,8 +225,7 @@ function PublicProject({ project }: { project: Project }) {
 }
 
 export function ResumeDocument() {
-  const productionWork = (company: string) =>
-    projects.filter((p) => p.status === "Production" && p.org === company);
+  const productionWork = projects.filter((p) => p.status === "Production");
   const publicWork = projects.filter((p) => p.status === "Personal Project" && p.inResume !== false);
 
   return (
@@ -258,9 +253,14 @@ export function ResumeDocument() {
           </View>
         ))}
 
+        <SectionHeading>Selected Work at Emirates NBD</SectionHeading>
+        {productionWork.map((project) => (
+          <ProjectWork key={project.name} project={project} />
+        ))}
+
         <SectionHeading>Experience</SectionHeading>
         {experience.map((role) => (
-          <Role key={`${role.company}-${role.role}`} role={role} work={productionWork(role.company)} />
+          <Role key={`${role.company}-${role.role}-${role.period}`} role={role} />
         ))}
 
         <SectionHeading>Open Source &amp; Writing</SectionHeading>
